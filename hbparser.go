@@ -18,9 +18,9 @@ func GetData() ([]byte, error) {
 	return body, err
 }
 
-// All fields are stored as bytes. Some fields (e.g. "name") may be stored
-// as strings or rune[] IN THE FUTURE, when the appropriate encoding
-// will be found.
+// All fields are stored as bytes. Some fields can be 
+// turned into string with regular bytes-to-string methods,
+// e.g. "string(s.Name)"
 type Server struct {
 	Link       []byte
 	unknown1   [2]byte

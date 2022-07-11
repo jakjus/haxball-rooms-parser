@@ -27,3 +27,11 @@ func TestGetAndParse(t *testing.T) {
 		}
 	}
 }
+
+func ExampleMain() {
+	body, _ := hbparser.GetData()
+	serverList := hbparser.Parse(body)
+	for _, s := range serverList {
+            s.Print()
+	}
+}
