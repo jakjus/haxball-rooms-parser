@@ -1,3 +1,4 @@
-Work in progress
+### hbparse
 
-Parser for haxball roomlist api (byte arrays cracked)
+Parser for Haxball roomlist API.
+

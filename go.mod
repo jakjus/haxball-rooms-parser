@@ -1,3 +1,3 @@
-module github.com/jakjus/haxball-rooms-parser
+module github.com/jakjus/hbparser
 
 go 1.18
