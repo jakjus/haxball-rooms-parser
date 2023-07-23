@@ -8,9 +8,9 @@ import (
 func printCmdE() {
 	body, _ := GetData()
 	serverList := Parse(body)
-	for _, s := range serverList {
+	for i, s := range serverList {
+		fmt.Println(i+1)
 		s.Print()
-		fmt.Print("\n")
 	}
 	fmt.Printf("\nTotal Servers: %v\n", len(serverList))
 }
