@@ -51,8 +51,7 @@ func decodeName(b []byte) string {
 				// It is shown as question mark in room list.
 				invalidSurrogate, _ := utf8.DecodeRune(b)
 				newName = newName + string(invalidSurrogate)
-				b = b[3:]
-				continue
+				break
 			}
 			const (
 				maskx = 0b00111111
@@ -86,6 +85,8 @@ func Parse(body []byte) []Server {
 	var ServerList []Server
 	startIndex := 0
 	body = body[1:]
+        var emptyByte byte = 0b10
+        var emptyByte2 byte = 0b11
 	for startIndex < len(body) {
 		singleServer := Server{}
 		singleServer.Link = body[startIndex+2 : startIndex+13]
@@ -93,7 +94,7 @@ func Parse(body []byte) []Server {
 		singleServer.unknown1[1] = body[startIndex+17]
 		var nameLength int
 		for i, b := range body[startIndex+18:] {
-			if b == 2 {
+			if b == emptyByte || b == emptyByte2 {
 				nameLength = i
 				break
 			}
