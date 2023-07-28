@@ -2,7 +2,7 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/jakjus/hbparser.svg)](https://pkg.go.dev/github.com/jakjus/hbparser)
 
-Parser for Haxball roomlist API.
+Parser for HaxBall roomlist API.
 
 ## Installation
 Download binary for your OS from *Releases*
