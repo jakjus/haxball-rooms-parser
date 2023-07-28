@@ -1,4 +1,4 @@
-### hbparse
+### hbparser
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/jakjus/hbparser.svg)](https://pkg.go.dev/github.com/jakjus/hbparser)
 
