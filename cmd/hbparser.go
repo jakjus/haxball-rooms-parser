@@ -117,87 +117,13 @@ func Parse(body []byte) []Server {
           }
           singleServer.encodedName = rest[:indc2]
           flagPart := rest[indc2:]
-          //encodedName, flagPart, _ := bytes.Cut(rest[:indc], []byte{2, 0, 3})
           singleServer.Name = decodeName(singleServer.encodedName)
           singleServer.Flag = flagPart[1:3]
-          fmt.Printf("flag: %v\n", flagPart)
           singleServer.unknown = flagPart[3:len(flagPart)-3]
-          //fmt.Printf("priv: %v\n", rest[indc:])
           singleServer.Private = flagPart[len(flagPart)-3]
           singleServer.PlayersMax = flagPart[len(flagPart)-2]
           singleServer.PlayersNow = flagPart[len(flagPart)-1]
-          if singleServer.PlayersMax > 30 {
-            fmt.Println(singleServer.Name)
-            fmt.Printf("%v\n", singleServer.encodedName)
-            fmt.Printf("flagpart: %v\n", flagPart)
-            fmt.Println("rest")
-            fmt.Println(rest)
-            fmt.Println("body")
-            fmt.Println(body[:100])
-          }
           ServerList = append(ServerList, singleServer)
         }
-        /*
-        for _, s := range servers {
-          linkEnd := bytes.IndexByte(s[2:], 0b0)
-          //fmt.Println(s[2:13])
-          link := s[2:linkEnd]
-          fmt.Println(linkEnd, link)
-        }
-        if (body[i] == 9 && body[i+1] == 0) {
-          fmt.Printf("\n")
-        }
-        if (body[i] == 0) {
-          fmt.Printf("\n")
-        }
-        fmt.Printf("\n%s\n%v", body[:128], body[:128])
-	for len(body) > 0 {
-		singleServer := Server{}
-                _, body, _ = bytes.Cut(body, []byte{0b0})
-                singleServer.Link, body, _ = bytes.Cut(body, []byte{0b0})
-                if len(singleServer.Link) < 5 {
-                  fmt.Printf("error link is too short")
-                  fmt.Printf("%v\n", singleServer.Link)
-                  fmt.Printf("%v\n", body[:10])
-                  continue
-                }
-                singleServer.Link = singleServer.Link[1:]
-                singleServer.unknown1, body, _ = bytes.Cut(body, []byte{0b0})
-                body = body[1:]
-
-		var nameLength int
-		for i, b := range body {
-			if b == 0b10 || b == 0b11 || b == 0b0 {
-				nameLength = i
-				break
-			}
-			singleServer.encodedName = append(singleServer.encodedName, b)
-		}
-                singleServer.Name = decodeName(singleServer.encodedName)
-                body = body[nameLength:]
-		singleServer.Flag = body[1:3]
-                //unknown2End := bytes.IndexByte(body[3:], 0b1000001)+3
-                unknown2End := 11
-                if body[11] != 0b0 && body[11] != 0b1 {
-                  unknown2End = 12
-                }
-                //if bytes.Index(body[3:18], byte(65)) == -1 {
-                //}
-                if body[unknown2End+2] > body[unknown2End+1] {
-                  fmt.Println(singleServer.Name)
-                  fmt.Printf("%v\n%b\n\n", body[3:18], body[3:18])
-                }
-                //fmt.Println(unknown2End)
-                singleServer.Geo = body[3:9]
-		singleServer.Private = body[unknown2End]
-		singleServer.PlayersMax = body[unknown2End+1]
-		singleServer.PlayersNow = body[unknown2End+2]
-                body = body[unknown2End+2:]
-               //// fmt.Printf("%v\n", body[startIndex:startIndex+18])
-               //// fmt.Printf("%s\n", body[startIndex:startIndex+18])
-		ServerList = append(ServerList, singleServer)
-		//startIndex = startIndex + 32
-	}
-        */
 	return ServerList
 }
