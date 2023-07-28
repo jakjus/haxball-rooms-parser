@@ -43,12 +43,12 @@ var cmdTimes = &cobra.Command{
 	},
 }
 
-var rootCmd = &cobra.Command{Use: "app"}
+var rootCmd = &cobra.Command{Use: "hbparser"}
 
 func init() {
-	cmdTimes.Flags().IntVarP(&echoTimes, "times", "t", 1, "times to echo the input")
-	rootCmd.AddCommand(printCmd, cmdEcho)
-	cmdEcho.AddCommand(cmdTimes)
+	//cmdTimes.Flags().IntVarP(&echoTimes, "times", "t", 1, "times to echo the input")
+	rootCmd.AddCommand(tableCmd)
+	//cmdEcho.AddCommand(cmdTimes)
 }
 
 func Execute() {

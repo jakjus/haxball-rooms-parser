@@ -1,9 +1,9 @@
 package main
 
 import (
-  "github.com/jakjus/hbparser/cmd"
+	"github.com/jakjus/hbparser/cmd"
 )
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }

@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"log"
-        "bytes"
-        //"strings"
+	//"strings"
 	"net/http"
 	"unicode/utf16"
 	"unicode/utf8"
@@ -42,7 +42,7 @@ func decodeName(b []byte) string {
 		var r rune
 		var size int
 		r, _ = utf8.DecodeRune(b)
-                // If not invalid surrogate in utf-8 interpretation
+		// If not invalid surrogate in utf-8 interpretation
 		if r != 65533 {
 			r, size = utf8.DecodeRune(b)
 			newName = newName + string(r)
@@ -76,7 +76,7 @@ func decodeName(b []byte) string {
 // Pretty prints server data.
 func (s *Server) TableRow() {
 	//fmt.Printf("Link: %s\nName: %v\n%x\nFlag: %s\nPrivate: %v\nPlayers: %v/%v\n", s.Link, s.Name, s.Name, s.Flag, s.Private, s.PlayersNow, s.PlayersMax)
-        //fmt.Printf("%b\n", s.Name)
+	//fmt.Printf("%b\n", s.Name)
 	//fmt.Printf("%v\n", utf16.IsSurrogate(r))
 	//fmt.Printf("%v\n", utf16.Encode(r))
 	//fmt.Printf("%s\n%b\n%v\n%v\n----\n", s.Name, s.Name, r, size)
@@ -87,43 +87,44 @@ func (s *Server) TableRow() {
 func Parse(body []byte) []Server {
 	var ServerList []Server
 	body = body[1:]
-        var link, rest []byte
-        for len(body) > 0 {
-          singleServer := Server{}
-          link, body, _ = bytes.Cut(body, []byte{9, 0})
-          fmt.Println("link", link)
-          singleServer.Link = link[2:len(link)-2]
-          indBody := len(body)
-          for i, char := range body {
-            if (i<2) { continue }
-            if (body[i-2] == 0 && body[i-1] == 11 && char > body[i-1]) {
-              indBody = i-2
-              break
-            }
-          }
-          rest = body[:indBody]
-          fmt.Println(rest)
-          body = body[indBody:]
-          rest = rest[1:]
-          indc2 := 0
-          for i, char := range rest {
-            if (char == 0) || (char == 2) || (char == 3) {
-              indc2 = i
-              break
-            }
-          }
-          if indc2 == 0 {
-            continue
-          }
-          singleServer.encodedName = rest[:indc2]
-          flagPart := rest[indc2:]
-          singleServer.Name = decodeName(singleServer.encodedName)
-          singleServer.Flag = flagPart[1:3]
-          singleServer.unknown = flagPart[3:len(flagPart)-3]
-          singleServer.Private = flagPart[len(flagPart)-3]
-          singleServer.PlayersMax = flagPart[len(flagPart)-2]
-          singleServer.PlayersNow = flagPart[len(flagPart)-1]
-          ServerList = append(ServerList, singleServer)
-        }
+	var link, rest []byte
+	for len(body) > 0 {
+		singleServer := Server{}
+		link, body, _ = bytes.Cut(body, []byte{9, 0})
+		singleServer.Link = link[2 : len(link)-2]
+		indBody := len(body)
+		for i, char := range body {
+			if i < 2 {
+				continue
+			}
+			if body[i-2] == 0 && body[i-1] == 11 && char > body[i-1] {
+				indBody = i - 2
+				break
+			}
+		}
+		rest = body[:indBody]
+		fmt.Println(rest)
+		body = body[indBody:]
+		rest = rest[1:]
+		indc2 := 0
+		for i, char := range rest {
+			if (char == 0) || (char == 2) || (char == 3) {
+				indc2 = i
+				break
+			}
+		}
+		if indc2 == 0 {
+			continue
+		}
+		singleServer.encodedName = rest[:indc2]
+		flagPart := rest[indc2:]
+		singleServer.Name = decodeName(singleServer.encodedName)
+		singleServer.Flag = flagPart[1:3]
+		singleServer.unknown = flagPart[3 : len(flagPart)-3]
+		singleServer.Private = flagPart[len(flagPart)-3]
+		singleServer.PlayersMax = flagPart[len(flagPart)-2]
+		singleServer.PlayersNow = flagPart[len(flagPart)-1]
+		ServerList = append(ServerList, singleServer)
+	}
 	return ServerList
 }
