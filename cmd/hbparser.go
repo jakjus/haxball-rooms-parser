@@ -2,10 +2,8 @@ package cmd
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"log"
-	//"strings"
 	"net/http"
 	"unicode/utf16"
 	"unicode/utf8"
@@ -73,16 +71,6 @@ func decodeName(b []byte) string {
 	return newName
 }
 
-// Pretty prints server data.
-func (s *Server) TableRow() {
-	//fmt.Printf("Link: %s\nName: %v\n%x\nFlag: %s\nPrivate: %v\nPlayers: %v/%v\n", s.Link, s.Name, s.Name, s.Flag, s.Private, s.PlayersNow, s.PlayersMax)
-	//fmt.Printf("%b\n", s.Name)
-	//fmt.Printf("%v\n", utf16.IsSurrogate(r))
-	//fmt.Printf("%v\n", utf16.Encode(r))
-	//fmt.Printf("%s\n%b\n%v\n%v\n----\n", s.Name, s.Name, r, size)
-	fmt.Printf("%s\n----\n", s.Name)
-}
-
 // Parses raw bytes into Server struct, based on bytes indices and dividers.
 func Parse(body []byte) []Server {
 	var ServerList []Server
@@ -103,7 +91,6 @@ func Parse(body []byte) []Server {
 			}
 		}
 		rest = body[:indBody]
-		fmt.Println(rest)
 		body = body[indBody:]
 		rest = rest[1:]
 		indc2 := 0
@@ -121,6 +108,9 @@ func Parse(body []byte) []Server {
 		singleServer.Name = decodeName(singleServer.encodedName)
 		singleServer.Flag = flagPart[1:3]
 		singleServer.unknown = flagPart[3 : len(flagPart)-3]
+                if (len(flagPart) < 3) {
+                  continue
+                }
 		singleServer.Private = flagPart[len(flagPart)-3]
 		singleServer.PlayersMax = flagPart[len(flagPart)-2]
 		singleServer.PlayersNow = flagPart[len(flagPart)-1]
