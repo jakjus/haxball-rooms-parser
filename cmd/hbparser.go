@@ -106,11 +106,11 @@ func Parse(body []byte) []Server {
 		singleServer.encodedName = rest[:indc2]
 		flagPart := rest[indc2:]
 		singleServer.Name = decodeName(singleServer.encodedName)
-		singleServer.Flag = flagPart[1:3]
-		singleServer.unknown = flagPart[3 : len(flagPart)-3]
-                if (len(flagPart) < 3) {
+                if (len(flagPart) < 5) {
                   continue
                 }
+		singleServer.Flag = flagPart[1:3]
+		singleServer.unknown = flagPart[3 : len(flagPart)-3]
 		singleServer.Private = flagPart[len(flagPart)-3]
 		singleServer.PlayersMax = flagPart[len(flagPart)-2]
 		singleServer.PlayersNow = flagPart[len(flagPart)-1]
