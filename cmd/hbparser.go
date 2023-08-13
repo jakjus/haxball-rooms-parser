@@ -13,7 +13,7 @@ import (
 func GetData() ([]byte, error) {
 	resp, err := http.Get("https://www.haxball.com/rs/api/list")
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("Cannot get data from HaxBall endpoint. Check your connection and try again.")
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
