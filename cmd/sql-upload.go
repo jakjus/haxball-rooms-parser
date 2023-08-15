@@ -63,10 +63,11 @@ var mysqlUploadCmd = &cobra.Command{
       insertSql := "INSERT INTO server (link, name, flag, private, playersNow, playersMax) VALUES (?, ?, ?, ?, ?, ?)"
       _, err := pool.Exec(insertSql, v.Link, v.Name, v.Flag, v.Private, v.PlayersNow, v.PlayersMax)
       if err != nil {
+        fmt.Println("Error during processing:", v)
         fmt.Println(err)
       }
     }
-    fmt.Println("Done")
+    fmt.Println("Success.")
   },
 }
 

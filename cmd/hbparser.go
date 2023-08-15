@@ -110,6 +110,11 @@ func Parse(body []byte) []Server {
                   continue
                 }
 		singleServer.Flag = flagPart[1:3]
+                r, _ := utf8.DecodeRune(singleServer.Flag)
+                // If flag is invalid
+		if r == 65533 {
+                  singleServer.Flag = []byte("xx")
+                }
 		singleServer.unknown = flagPart[3 : len(flagPart)-3]
 		singleServer.Private = flagPart[len(flagPart)-3]
 		singleServer.PlayersMax = flagPart[len(flagPart)-2]
