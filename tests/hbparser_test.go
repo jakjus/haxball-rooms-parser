@@ -1,12 +1,12 @@
 package hbparser_test
 
 import (
-	"github.com/jakjus/hbparser"
+	"github.com/jakjus/hbparser/cmd"
 	"testing"
 )
 
 func TestGet(t *testing.T) {
-	body, err := hbparser.GetData()
+	body, err := cmd.GetData()
 	if len(body) < 1 {
 		t.Fatalf(`Data downloaded from Haxball API is empty.`)
 	}
@@ -16,22 +16,14 @@ func TestGet(t *testing.T) {
 }
 
 func TestGetAndParse(t *testing.T) {
-	body, _ := hbparser.GetData()
-	serverList := hbparser.Parse(body)
+	body, _ := cmd.GetData()
+	serverList := cmd.Parse(body)
 	for _, s := range serverList {
-		if s.Name == nil {
+		if s.Name == "" {
 			t.Fatalf(`Field "name" cannot be nil.`)
 		}
-		if s.Link == nil {
+		if len(s.Link) < 1 {
 			t.Fatalf(`Field "link" cannot be nil.`)
 		}
-	}
-}
-
-func ExampleMain() {
-	body, _ := hbparser.GetData()
-	serverList := hbparser.Parse(body)
-	for _, s := range serverList {
-            s.Print()
 	}
 }

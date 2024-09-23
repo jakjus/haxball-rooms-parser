@@ -5,8 +5,11 @@ import (
 	"github.com/spf13/cobra"
         "database/sql"
         _ "github.com/go-sql-driver/mysql"
-        "io/ioutil"
+        "embed"
 )
+
+//go:embed "sql/init.sql"
+var sqlFolder embed.FS
 
 var dbCmd = &cobra.Command{
       Use:   "db",
@@ -31,7 +34,8 @@ var mysqlInitCmd = &cobra.Command{
       panic(err)
     }
     fmt.Println("Reading init.sql file...")
-    initSql, err := ioutil.ReadFile("./cmd/sql/init.sql")
+
+    initSql, err := sqlFolder.ReadFile("sql/init.sql")
     if err != nil {
       panic(err)
     }
